@@ -254,7 +254,9 @@ hash table, doubly-linked list, https://leetcode.cn/problems/lru-cache/
 
 思路：
 
-这题直接做就挺简单的。后来问了AI发现deque的in操作竟然是O(len)的，所以这个做法比较差。
+这题直接做就挺简单的。后来问了AI发现deque的in操作竟然是O(len)的，所以刚开始的做法比较差。
+
+于是下面改成了用counting而不用deque的in操作的做法，立马变成O(1)飞快。
 
 后来看了题解学了更快的双向链表的做法。（因为本题相当于用链表实现一个有更强功能的deque）
 
@@ -288,6 +290,39 @@ class LRUCache(object):
                 key = self.time_stamp.popleft()
                 if key in self.time_stamp: continue
                 self.in_lru[key] = False
+                self.remains = 0
+                break
+```
+
+```python
+class LRUCache(object):
+    def __init__(self, capacity):
+        self.remains = capacity
+        self.lru = {}
+        self.time_stamp = deque()
+        self.counting = [0] * 10001
+
+    def get(self, key):
+        if not self.counting[key]: return -1
+        self.time_stamp.append(key)
+        self.counting[key] += 1
+        return self.lru[key]
+    
+    def put(self, key, value):
+        if self.counting[key]: 
+            self.lru[key] = value
+            self.time_stamp.append(key)
+            self.counting[key] += 1
+            return
+        self.lru[key] = value
+        self.time_stamp.append(key)
+        self.counting[key] += 1
+        self.remains -= 1
+        if self.remains == -1:
+            while self.time_stamp:
+                key = self.time_stamp.popleft()
+                self.counting[key] -= 1
+                if self.counting[key] >= 1: continue
                 self.remains = 0
                 break
 ```
