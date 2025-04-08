@@ -311,10 +311,10 @@ tree = defaultdict(list)
 parent, children = set(), set()
 for i in range(n):
     x = list(map(int, input().split()))
-    parent.add(x[0])
+    parent.add(x[0]) # add只能加单元素
     if len(x) > 1:
         tmp = x[1:]
-        children.update(tmp)
+        children.update(tmp) # update能传list
         tree[x[0]] = tmp
 rt = (parent - children).pop() # 集合A\B
 ```
