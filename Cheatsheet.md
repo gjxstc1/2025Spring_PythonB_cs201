@@ -304,6 +304,21 @@ for ___ in range(m):
     print(" ".join(map(str, sorted(ans))))
 ```
 
+```python
+from collections import defaultdict
+n = int(input())
+tree = defaultdict(list)
+parent, children = set(), set()
+for i in range(n):
+    x = list(map(int, input().split()))
+    parent.add(x[0])
+    if len(x) > 1:
+        tmp = x[1:]
+        children.update(tmp)
+        tree[x[0]] = tmp
+rt = (parent - children).pop() # 集合A\B
+```
+
 ## 14 最大子矩形
 
 ```python
