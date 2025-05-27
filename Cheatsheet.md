@@ -871,7 +871,7 @@ for ___ in range(T):
     print(*last)
 ```
 
-## 24 辅助栈
+## 23 辅助栈
 
 ```python
 def main():
